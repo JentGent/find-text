@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <style>
+            canvas {
+                border: 1px solid black;
+            }
+        </style>
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    </head>
+    <body>
+        <!-- <canvas id="canvas" width="700" height="1000"></canvas>
+        <canvas id="mask" width="700" height="1000"></canvas> -->
+        <canvas id="canvas" width="300" height="200"></canvas>
+        <canvas id="mask" width="300" height="200"></canvas><br>
+        <canvas id="test" width="300" height="200"></canvas><br>
+        <script>
+            const cnv = document.getElementById("canvas"),
+                  ctx = cnv.getContext("2d", { willReadFrequently: true });
+            const msk = document.getElementById("mask"),
+                  mctx = msk.getContext("2d", { willReadFrequently: true });
+            const tst = document.getElementById("test"),
+                  tctx = tst.getContext("2d");
+            const characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789~!@#$%^&*()-=_+[]\{}|;':\",./<>?";
+            function random(b = 1, a = 0) {
+                return a + Math.random() * (b - a);
+            }
+        </script>
+        <label for="threshold">binary classification threshold</label><input type="range" value="50" min="0" max="100" id="threshold" name="threshold" oninput="this.nextElementSibling.value = this.value"><output>50</output>
+        <input type="button" value="sample" onclick="tf.tidy(() => { [testImage, testMask] = sample(); test(cnv, ctx, tst, tctx, testImage.reshape([1, 100, 200, 1])) })">
+        <br><br>
+        <label for="json">JSON</label><input type="file" id="json" name="json"><br>
+        <label for="weights">weights</label><input type="file" id="weights" name="weights"><br>
+        <input type="button" value="load in" onclick="load()"><br><br>
+        <label for="epochs">number of epochs</label><input type="range" value="11" min="1" max="100" id="epochs" name="epochs" oninput="this.nextElementSibling.value = this.value"><output>11</output><br>
+        <label for="batches">batches per epoch</label><input type="range" value="3000" min="1" max="6000" id="batches" name="batches" oninput="this.nextElementSibling.value = this.value"><output>3000</output><br>
+        <label for="batchSize">batch size</label><input type="range" value="16" min="1" max="100" id="batchSize" name="batchSize" oninput="this.nextElementSibling.value = this.value"><output>16</output><br>
+        <input type="button" value="train" onclick="train()"><input type="button" value="stop training" onclick="model.stopTraining = true"><br><br>
+        <input type="button" value="save" onclick="save()"><br><br>
+        <canvas id="image" width="200" height="100"></canvas>
+        <canvas id="prediction" width="200" height="100"></canvas><br>
+        <script>
+            const img = document.getElementById("image"),
+                  ictx = img.getContext("2d");
+            const prd = document.getElementById("prediction"),
+                  pctx = prd.getContext("2d");
+        </script>
+        <label for="upload">upload image</label><input type="file" id="upload" name="upload" accept="image/"><br>
+        <input type="button" value="test image" onclick="image()"><br>
+        <script src="sample.js"></script>
+        <script src="model.js"></script>
+    </body>
+</html>
